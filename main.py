@@ -4,7 +4,6 @@ import os
 
 from email import encoders
 from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.audio import MIMEAudio
 from email.mime.image import MIMEImage
@@ -23,9 +22,10 @@ mail = MIMEMultipart()
 
 mail['From'] = "Python Hub"
 mail['To'] = os.getenv('TO')
-mail['Subject'] = 'This is a test message'
+mail['Subject'] = 'A gift from Python Hub'
 
-mail.attach(MIMEText("This a test mail sent with python by pythonhub.", 'plain'))
+mail.attach(
+    MIMEText("This is an image and audio attachment from Python Hub", 'plain'))
 
 image = open('image.jpg', 'rb')
 audio = open('sample.mp3', 'rb')
