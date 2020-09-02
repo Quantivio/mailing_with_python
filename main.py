@@ -6,6 +6,8 @@ from email import encoders
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
+from email.mime.audio import MIMEAudio
+from email.mime.image import MIMEImage
 
 dotenv.load_dotenv('.env')
 
@@ -13,35 +15,35 @@ server = smtplib.SMTP('smtp.gmail.com', 25)
 
 server.starttls()
 
+print(os.getenv('EMAIL'), os.getenv('PASSWORD'))
+
 server.login(os.getenv('EMAIL'), os.getenv('PASSWORD'))
 
 mail = MIMEMultipart()
 
 mail['From'] = "Python Hub"
-mail['To'] = "vetrichelvaninovator@gmail.com"
+mail['To'] = os.getenv('TO')
 mail['Subject'] = 'This is a test message'
 
 mail.attach(MIMEText("This a test mail sent with python by pythonhub.", 'plain'))
 
 image = open('image.jpg', 'rb')
-# audio = open('sample.mp3', 'rb') // Send Audio
+audio = open('sample.mp3', 'rb')
 
-attachment = MIMEBase('application', 'octet-stream')
+imageAttachment = MIMEImage(image.read())
+imageAttachment.add_header('Content-Disposition',
+                           'attachment; filename=image.jpg')
+mail.attach(imageAttachment)
+image.close()
 
+audioAttachment = MIMEAudio(audio.read(), 'mp3')
+audioAttachment.add_header('Content-Disposition',
+                           'attachment; filename=sample.mp3')
+mail.attach(audioAttachment)
+audio.close()
 
-attachment.set_payload(image.read())
-# attachment.set_payload(audio.read()) // Send Audio
-
-encoders.encode_base64(attachment)
-
-attachment.add_header('Content-Disposition',
-                      'attachment; filename=image.jpg')
-
-# attachment.add_header('Content-Disposition',
-#   'attachment; filename=sample.mp3') // Send Audio
-
-mail.attach(attachment)
 
 message = mail.as_string()
 
-server.sendmail(os.getenv('EMAIL'), os.getenv('TO'), message)
+server.sendmail(os.getenv('EMAIL'),
+                os.getenv('TO'), message)
