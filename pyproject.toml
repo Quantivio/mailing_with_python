@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "mailing-with-python"
+version = "0.1.0"
+description = ""
+authors = ["Vetrichelvan"]
+readme = "README.md"
+packages = [{include = "mailing_with_python"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.16.1"
+pylint-quotes = "^0.2.3"
+black = {extras = ["d"], version = "^23.1.0"}
+isort = "^5.12.0"
+pre-commit = "^3.0.4"
+python-dotenv = "^0.21.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
